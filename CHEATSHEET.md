@@ -281,3 +281,58 @@ terraform providers lock -platform=linux_amd64
 | `helm list` | Lister les releases installées |
 | `helm status release` | Statut d'une release |
 | `helm values chart` | Voir les valeurs par défaut |
+
+## Ansible
+
+| Commande | Description |
+|----------|-------------|
+| `ansible --version` | Version et config d'Ansible |
+| `ansible all -m ping` | Tester la connectivité de tous les hôtes |
+| `ansible all -m setup` | Collecter les facts de tous les hôtes |
+| `ansible all -a "uptime"` | Exécuter une commande sur tous les hôtes |
+| `ansible groupe -a "df -h"` | Exécuter une commande sur un groupe |
+| `ansible all -m copy -a "src=f dest=/tmp/f"` | Copier un fichier vers les hôtes |
+| `ansible all -m apt -a "name=nginx state=present" -b` | Installer un paquet (become root) |
+| `ansible all -m service -a "name=nginx state=started" -b` | Démarrer un service |
+| `ansible-inventory --list` | Lister l'inventaire en JSON |
+| `ansible-inventory --graph` | Afficher l'inventaire en arbre |
+
+### Playbooks
+
+| Commande | Description |
+|----------|-------------|
+| `ansible-playbook playbook.yml` | Exécuter un playbook |
+| `ansible-playbook playbook.yml -i inventaire` | Avec un inventaire spécifique |
+| `ansible-playbook playbook.yml -l groupe` | Limiter à un groupe/hôte |
+| `ansible-playbook playbook.yml --tags "tag1,tag2"` | Exécuter uniquement certains tags |
+| `ansible-playbook playbook.yml --skip-tags "tag"` | Ignorer certains tags |
+| `ansible-playbook playbook.yml --check` | Dry run (ne change rien) |
+| `ansible-playbook playbook.yml --diff` | Afficher les différences |
+| `ansible-playbook playbook.yml --check --diff` | Dry run avec diff |
+| `ansible-playbook playbook.yml -e "var=valeur"` | Passer des variables |
+| `ansible-playbook playbook.yml --start-at-task="nom"` | Reprendre à une tâche |
+| `ansible-playbook playbook.yml --step` | Exécuter tâche par tâche (confirmation) |
+| `ansible-playbook playbook.yml -v` | Verbose (-vv, -vvv pour plus) |
+
+### Ansible Vault
+
+| Commande | Description |
+|----------|-------------|
+| `ansible-vault create secret.yml` | Créer un fichier chiffré |
+| `ansible-vault edit secret.yml` | Éditer un fichier chiffré |
+| `ansible-vault view secret.yml` | Lire un fichier chiffré |
+| `ansible-vault encrypt fichier.yml` | Chiffrer un fichier existant |
+| `ansible-vault decrypt fichier.yml` | Déchiffrer un fichier |
+| `ansible-vault rekey fichier.yml` | Changer le mot de passe |
+| `ansible-playbook playbook.yml --ask-vault-pass` | Exécuter avec vault (prompt) |
+| `ansible-playbook playbook.yml --vault-password-file=f` | Exécuter avec fichier de mot de passe |
+
+### Ansible Galaxy
+
+| Commande | Description |
+|----------|-------------|
+| `ansible-galaxy init mon_role` | Créer la structure d'un rôle |
+| `ansible-galaxy install nom_role` | Installer un rôle depuis Galaxy |
+| `ansible-galaxy install -r requirements.yml` | Installer les rôles depuis un fichier |
+| `ansible-galaxy list` | Lister les rôles installés |
+| `ansible-galaxy collection install ns.collection` | Installer une collection |
