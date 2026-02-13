@@ -172,3 +172,67 @@ run = "sudo apt-get install {{arg(name='package')}}"
 [tasks.remove]
 description = "apt-get remove"
 run = "sudo apt-get remove {{arg(name='package')}}"
+
+# =============================================================================
+# Terraform tasks
+# =============================================================================
+
+[tasks.tf]
+description = "terraform"
+run = "terraform {{arg(name='args')}}"
+
+[tasks.tfi]
+description = "terraform init"
+run = "terraform init"
+
+[tasks.tfp]
+description = "terraform plan"
+run = "terraform plan"
+
+[tasks.tfa]
+description = "terraform apply"
+run = "terraform apply"
+
+[tasks.tfd]
+description = "terraform destroy"
+run = "terraform destroy"
+
+[tasks.tfo]
+description = "terraform output"
+run = "terraform output"
+
+[tasks.tfg]
+description = "terraform graph"
+run = "terraform graph"
+
+[tasks.tfs]
+description = "terraform state"
+run = "terraform state {{arg(name='args')}}"
+
+[tasks.tfl]
+description = "terraform console"
+run = "terraform console"
+
+[tasks.tff]
+description = "terraform fmt"
+run = "terraform fmt"
+
+[tasks.tfv]
+description = "terraform validate"
+run = "terraform validate"
+
+[tasks.tfw]
+description = "terraform workspace"
+run = "terraform workspace {{arg(name='args')}}"
+
+[tasks.tfiw]
+description = "terraform import"
+run = "terraform import {{arg(name='address')}} {{arg(name='id')}}"
+
+[tasks.tfr]
+description = "terraform refresh"
+run = "terraform refresh"
+
+[tasks.tfsh]
+description = "terraform show"
+run = "terraform show"

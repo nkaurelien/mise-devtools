@@ -36,8 +36,16 @@ source shell/source_all.sh
 Or source individually:
 
 ```bash
-source shell/git_aliases.sh    # Git shortcuts only
-source shell/linux_aliases.sh  # Linux/system shortcuts only
+source shell/git_aliases.sh        # Git shortcuts
+source shell/linux_aliases.sh      # Linux/system shortcuts
+source shell/terraform_aliases.sh  # Terraform shortcuts
+source shell/overriding_aliases.sh # Safer defaults (cp -i, rm -i, etc.)
+```
+
+To unset all aliases:
+
+```bash
+source shell/unset_aliases.sh
 ```
 
 Add to your `.bashrc` / `.zshrc` for permanent use:
@@ -131,6 +139,44 @@ source /path/to/mise-devtools/shell/source_all.sh
 | `upgrade` | `sudo apt-get update && upgrade` |
 | `install` | `sudo apt-get install` |
 | `remove` | `sudo apt-get remove` |
+
+### Terraform
+
+| Alias | Command |
+|-------|---------|
+| `tf` | `terraform` |
+| `tfi` | `terraform init` |
+| `tfp` | `terraform plan` |
+| `tfa` | `terraform apply` |
+| `tfd` | `terraform destroy` |
+| `tfo` | `terraform output` |
+| `tfg` | `terraform graph` |
+| `tfs` | `terraform state` |
+| `tfl` | `terraform console` |
+| `tff` | `terraform fmt` |
+| `tfv` | `terraform validate` |
+| `tfw` | `terraform workspace` |
+| `tfiw` | `terraform import` |
+| `tft` | `terraform taint` |
+| `tfu` | `terraform untaint` |
+| `tfr` | `terraform refresh` |
+| `tfsh` | `terraform show` |
+
+### Overriding (safer defaults)
+
+| Alias | Command |
+|-------|---------|
+| `cp` | `cp -i` (confirm before overwrite) |
+| `mv` | `mv -i` (confirm before overwrite) |
+| `rm` | `rm -i` (confirm before delete) |
+| `ls` | `ls -la` |
+| `rsync` | `rsync -avz` |
+| `wget` | `wget -q` |
+| `curl` | `curl -s` |
+| `tar` | `tar -xzvf` |
+| `less` | `less -F` |
+| `df` | `df -h` |
+| `du` | `du -sh` |
 
 ## Sources
 
