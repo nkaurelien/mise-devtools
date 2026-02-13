@@ -209,3 +209,75 @@ terraform apply -target=aws_instance.web
 # Verrouiller les versions des providers
 terraform providers lock -platform=linux_amd64
 ```
+
+## Kubernetes (kubectl)
+
+| Commande | Description |
+|----------|-------------|
+| `kubectl cluster-info` | Infos du cluster |
+| `kubectl get nodes` | Lister les nœuds |
+| `kubectl get pods` | Pods du namespace courant |
+| `kubectl get pods -A` | Pods de tous les namespaces |
+| `kubectl get svc` | Lister les services |
+| `kubectl get deploy` | Lister les déploiements |
+| `kubectl get ingress` | Lister les ingress |
+| `kubectl get ns` | Lister les namespaces |
+| `kubectl get all` | Toutes les ressources du namespace |
+| `kubectl describe pod nom` | Détails d'un pod |
+| `kubectl logs pod` | Logs d'un pod |
+| `kubectl logs -f pod` | Suivre les logs en temps réel |
+| `kubectl logs pod -c conteneur` | Logs d'un conteneur spécifique |
+| `kubectl exec -it pod -- bash` | Shell dans un pod |
+| `kubectl port-forward pod 8080:80` | Rediriger un port local vers un pod |
+| `kubectl port-forward svc/nom 8080:80` | Rediriger vers un service |
+| `kubectl apply -f fichier.yaml` | Appliquer une configuration |
+| `kubectl delete -f fichier.yaml` | Supprimer une configuration |
+| `kubectl delete pod nom` | Supprimer un pod |
+| `kubectl scale deploy nom --replicas=3` | Scaler un déploiement |
+| `kubectl rollout status deploy/nom` | Statut du rollout |
+| `kubectl rollout undo deploy/nom` | Rollback du déploiement |
+| `kubectl rollout history deploy/nom` | Historique des rollouts |
+| `kubectl top pods` | Consommation CPU/mémoire des pods |
+| `kubectl top nodes` | Consommation CPU/mémoire des nœuds |
+
+### Contexte & namespace
+
+| Commande | Description |
+|----------|-------------|
+| `kubectl config get-contexts` | Lister les contextes |
+| `kubectl config current-context` | Contexte actif |
+| `kubectl config use-context nom` | Changer de contexte (cluster) |
+| `kubectl config set-context --current --namespace=nom` | Changer le namespace par défaut |
+
+### Création rapide
+
+| Commande | Description |
+|----------|-------------|
+| `kubectl create ns mon-ns` | Créer un namespace |
+| `kubectl create deploy nom --image=nginx` | Créer un déploiement |
+| `kubectl expose deploy nom --port=80 --type=NodePort` | Exposer un déploiement |
+| `kubectl run debug --image=busybox -it --rm -- sh` | Pod temporaire de debug |
+
+### Debugging
+
+| Commande | Description |
+|----------|-------------|
+| `kubectl get events --sort-by=.metadata.creationTimestamp` | Événements triés par date |
+| `kubectl describe node nom` | Détails d'un nœud (capacité, conditions) |
+| `kubectl get pod nom -o yaml` | Config complète d'un pod en YAML |
+| `kubectl diff -f fichier.yaml` | Diff avant apply |
+| `kubectl auth can-i create pods` | Vérifier ses permissions |
+
+### Helm (gestionnaire de packages K8s)
+
+| Commande | Description |
+|----------|-------------|
+| `helm repo add nom url` | Ajouter un repo de charts |
+| `helm repo update` | Mettre à jour les repos |
+| `helm search repo mot` | Chercher un chart |
+| `helm install release chart` | Installer un chart |
+| `helm upgrade release chart` | Mettre à jour une release |
+| `helm uninstall release` | Désinstaller une release |
+| `helm list` | Lister les releases installées |
+| `helm status release` | Statut d'une release |
+| `helm values chart` | Voir les valeurs par défaut |
