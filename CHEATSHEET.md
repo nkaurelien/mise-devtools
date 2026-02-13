@@ -336,3 +336,63 @@ terraform providers lock -platform=linux_amd64
 | `ansible-galaxy install -r requirements.yml` | Installer les rôles depuis un fichier |
 | `ansible-galaxy list` | Lister les rôles installés |
 | `ansible-galaxy collection install ns.collection` | Installer une collection |
+
+## SOPS (Secrets OPerationS)
+
+| Commande | Description |
+|----------|-------------|
+| `sops fichier.yaml` | Éditer un fichier chiffré (ouvre l'éditeur) |
+| `sops -e fichier.yaml` | Chiffrer un fichier (encrypt) |
+| `sops -d fichier.yaml` | Déchiffrer un fichier (decrypt) |
+| `sops -d fichier.yaml > clair.yaml` | Déchiffrer vers un nouveau fichier |
+| `sops -i -e fichier.yaml` | Chiffrer en place (in-place) |
+| `sops -i -d fichier.yaml` | Déchiffrer en place |
+| `sops -r fichier.yaml` | Rotation des clés de chiffrement |
+| `sops updatekeys fichier.yaml` | Mettre à jour les clés selon .sops.yaml |
+
+### Chiffrement partiel (encrypted_regex)
+
+| Commande | Description |
+|----------|-------------|
+| `sops -e --encrypted-regex '^(password\|secret)$' f.yaml` | Chiffrer uniquement certaines clés |
+| `sops -e --unencrypted-regex '^(metadata\|kind)$' f.yaml` | Tout chiffrer sauf certaines clés |
+
+### Backends de clés
+
+| Commande | Description |
+|----------|-------------|
+| `sops -e --age age1... fichier.yaml` | Chiffrer avec une clé age |
+| `sops -e --pgp FINGERPRINT fichier.yaml` | Chiffrer avec une clé PGP |
+| `sops -e --kms arn:aws:kms:... fichier.yaml` | Chiffrer avec AWS KMS |
+| `sops -e --gcp-kms projects/.../keys/... fichier.yaml` | Chiffrer avec GCP KMS |
+| `sops -e --azure-kv https://vault... fichier.yaml` | Chiffrer avec Azure Key Vault |
+
+### Configuration (.sops.yaml)
+
+```yaml
+# .sops.yaml - à la racine du projet
+creation_rules:
+  # Chiffrer les secrets avec age
+  - path_regex: secrets/.*\.yaml$
+    age: age1ql3z7hjy54pw3hyww5ayyfg7zqgvc7w3j2elw8zmrj2kg5sfn9aqmcac8p
+
+  # Chiffrer avec AWS KMS pour la prod
+  - path_regex: prod/.*\.yaml$
+    kms: arn:aws:kms:eu-west-1:123456789:key/abcd-1234
+
+  # Chiffrer seulement les valeurs sensibles
+  - path_regex: config/.*\.yaml$
+    encrypted_regex: ^(password|token|secret|key)$
+    age: age1...
+```
+
+### Utilisation avec Kubernetes / Helm
+
+```bash
+# Déchiffrer et appliquer un secret K8s
+sops -d secret.yaml | kubectl apply -f -
+
+# Avec helm-secrets (plugin Helm)
+helm plugin install https://github.com/jkroepke/helm-secrets
+helm secrets upgrade release chart -f secrets.yaml
+```
