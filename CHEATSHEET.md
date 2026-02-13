@@ -125,3 +125,87 @@ Pense-bête des commandes Linux/macOS pratiques.
 | `chmod 600 fichier` | rw------- (privé) |
 | `chown user:group fichier` | Changer le propriétaire |
 | `sudo !!` | Relancer la dernière commande en root |
+
+## Docker
+
+| Commande | Description |
+|----------|-------------|
+| `docker ps` | Conteneurs en cours |
+| `docker ps -a` | Tous les conteneurs (y compris arrêtés) |
+| `docker images` | Lister les images locales |
+| `docker pull image:tag` | Télécharger une image |
+| `docker build -t nom .` | Construire une image depuis un Dockerfile |
+| `docker run -it --rm image` | Lancer un conteneur interactif (supprimé à l'arrêt) |
+| `docker run -d -p 8080:80 image` | Lancer en arrière-plan avec port mapping |
+| `docker exec -it conteneur bash` | Ouvrir un shell dans un conteneur |
+| `docker logs -f conteneur` | Suivre les logs en temps réel |
+| `docker stop conteneur` | Arrêter un conteneur |
+| `docker rm conteneur` | Supprimer un conteneur |
+| `docker rmi image` | Supprimer une image |
+| `docker system prune -a` | Nettoyer tout (conteneurs, images, volumes inutilisés) |
+| `docker volume ls` | Lister les volumes |
+| `docker network ls` | Lister les réseaux |
+
+### Docker Compose
+
+| Commande | Description |
+|----------|-------------|
+| `docker compose up -d` | Démarrer les services en arrière-plan |
+| `docker compose down` | Arrêter et supprimer les services |
+| `docker compose ps` | État des services |
+| `docker compose logs -f` | Suivre les logs de tous les services |
+| `docker compose build` | Reconstruire les images |
+| `docker compose exec service bash` | Shell dans un service |
+| `docker compose pull` | Mettre à jour les images |
+| `docker compose restart` | Redémarrer les services |
+
+## Terraform
+
+| Commande | Description |
+|----------|-------------|
+| `terraform init` | Initialiser le répertoire (télécharger les providers) |
+| `terraform plan` | Prévisualiser les changements |
+| `terraform apply` | Appliquer les changements |
+| `terraform apply -auto-approve` | Appliquer sans confirmation |
+| `terraform destroy` | Détruire toute l'infrastructure |
+| `terraform validate` | Valider la syntaxe des fichiers .tf |
+| `terraform fmt` | Formatter les fichiers .tf |
+| `terraform fmt -recursive` | Formatter récursivement |
+| `terraform output` | Afficher les outputs |
+| `terraform output -json` | Outputs en JSON |
+| `terraform show` | Afficher l'état courant |
+| `terraform state list` | Lister les ressources dans le state |
+| `terraform state show resource` | Détails d'une ressource |
+| `terraform import addr id` | Importer une ressource existante |
+| `terraform taint resource` | Marquer pour recréation |
+| `terraform untaint resource` | Annuler un taint |
+| `terraform refresh` | Synchroniser le state avec le réel |
+| `terraform console` | Console interactive (tester des expressions) |
+| `terraform graph \| dot -Tpng > graph.png` | Générer un graphe visuel |
+
+### Terraform Workspaces
+
+| Commande | Description |
+|----------|-------------|
+| `terraform workspace list` | Lister les workspaces |
+| `terraform workspace new dev` | Créer un workspace |
+| `terraform workspace select dev` | Changer de workspace |
+| `terraform workspace delete dev` | Supprimer un workspace |
+
+### Terraform bonnes pratiques
+
+```bash
+# Workflow classique
+terraform init
+terraform fmt -recursive
+terraform validate
+terraform plan -out=tfplan
+terraform apply tfplan
+
+# Cibler une ressource spécifique
+terraform plan -target=aws_instance.web
+terraform apply -target=aws_instance.web
+
+# Verrouiller les versions des providers
+terraform providers lock -platform=linux_amd64
+```
