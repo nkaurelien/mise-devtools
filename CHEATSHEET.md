@@ -484,3 +484,135 @@ export VAULT_TOKEN="hvs.xxxxxxxxxxxxx"
 export VAULT_NAMESPACE="admin"           # Enterprise
 export VAULT_SKIP_VERIFY=true            # Dev uniquement
 ```
+
+## Pipes & redirections shell
+
+### Redirections de base
+
+| Syntaxe | Description |
+|---------|-------------|
+| `cmd > fichier` | Rediriger stdout vers un fichier (écrase) |
+| `cmd >> fichier` | Rediriger stdout (ajoute à la fin) |
+| `cmd 2> fichier` | Rediriger stderr vers un fichier |
+| `cmd 2>> fichier` | Rediriger stderr (ajoute à la fin) |
+| `cmd &> fichier` | Rediriger stdout + stderr vers un fichier |
+| `cmd &>> fichier` | Rediriger stdout + stderr (ajoute) |
+| `cmd 2>&1` | Rediriger stderr vers stdout |
+| `cmd 1>&2` | Rediriger stdout vers stderr |
+| `cmd < fichier` | Lire stdin depuis un fichier |
+| `cmd > /dev/null` | Supprimer la sortie (silencieux) |
+| `cmd > /dev/null 2>&1` | Supprimer toute sortie (stdout + stderr) |
+
+### Pipes
+
+| Syntaxe | Description |
+|---------|-------------|
+| `cmd1 \| cmd2` | Envoyer stdout de cmd1 vers stdin de cmd2 |
+| `cmd1 \|& cmd2` | Envoyer stdout + stderr vers cmd2 |
+| `cmd \| tee fichier` | Afficher ET écrire dans un fichier |
+| `cmd \| tee -a fichier` | Afficher ET ajouter au fichier |
+
+### Exemples pratiques avec pipe
+
+```bash
+# Compter les fichiers dans un dossier
+ls -1 | wc -l
+
+# Chercher et trier les processus par mémoire
+ps aux | sort -k4 -rn | head -10
+
+# Extraire les IPs uniques d'un log
+cat access.log | awk '{print $1}' | sort | uniq -c | sort -rn
+
+# Chercher du texte et afficher avec contexte
+cat fichier.log | grep -C 3 "ERROR"
+
+# Remplacer du texte à la volée
+cat config.ini | sed 's/localhost/192.168.1.10/g' > config_new.ini
+
+# Lister les 10 plus gros fichiers
+du -ah /var | sort -rh | head -10
+
+# Filtrer les colonnes d'un CSV
+cat data.csv | cut -d',' -f1,3 | sort
+
+# Compter les occurrences d'un mot
+cat fichier | tr ' ' '\n' | grep -c "mot"
+
+# Surveiller un log en temps réel avec filtre
+tail -f /var/log/syslog | grep --line-buffered "error"
+
+# Lister les ports en écoute avec le nom du processus
+ss -tulanp | grep LISTEN | awk '{print $5, $7}'
+```
+
+### Here document (heredoc)
+
+```bash
+# Écrire plusieurs lignes dans un fichier
+cat << 'EOF' > fichier.txt
+Ligne 1
+Ligne 2 avec $variable non interprétée
+EOF
+
+# Avec interprétation des variables
+cat << EOF > fichier.txt
+Bonjour $USER
+Date: $(date)
+EOF
+
+# Passer du texte à une commande
+mysql -u root << EOF
+CREATE DATABASE mydb;
+GRANT ALL ON mydb.* TO 'user'@'localhost';
+EOF
+```
+
+### Here string
+
+```bash
+# Passer une chaîne à stdin
+grep "motif" <<< "texte à chercher"
+
+# Encoder en base64
+base64 <<< "mon secret"
+
+# Compter les mots
+wc -w <<< "un deux trois"
+```
+
+### Chaînage de commandes
+
+| Syntaxe | Description |
+|---------|-------------|
+| `cmd1 && cmd2` | Exécuter cmd2 seulement si cmd1 réussit |
+| `cmd1 \|\| cmd2` | Exécuter cmd2 seulement si cmd1 échoue |
+| `cmd1 ; cmd2` | Exécuter cmd2 quoi qu'il arrive |
+| `(cmd1 ; cmd2)` | Exécuter dans un sous-shell |
+| `{ cmd1 ; cmd2 ; }` | Grouper sans sous-shell |
+
+### Process substitution
+
+```bash
+# Comparer la sortie de deux commandes
+diff <(ls dir1) <(ls dir2)
+
+# Utiliser la sortie d'une commande comme fichier
+while read line; do echo "$line"; done < <(curl -s https://example.com)
+```
+
+### xargs (construire des commandes depuis stdin)
+
+```bash
+# Supprimer les fichiers trouvés
+find . -name "*.tmp" | xargs rm
+
+# Avec gestion des espaces dans les noms
+find . -name "*.log" -print0 | xargs -0 rm
+
+# Exécuter en parallèle (4 processus)
+cat urls.txt | xargs -P 4 -I {} curl -s {}
+
+# Passer chaque ligne comme argument
+cat hosts.txt | xargs -I {} ssh {} "uptime"
+```
