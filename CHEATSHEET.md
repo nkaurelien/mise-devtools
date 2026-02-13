@@ -396,3 +396,91 @@ sops -d secret.yaml | kubectl apply -f -
 helm plugin install https://github.com/jkroepke/helm-secrets
 helm secrets upgrade release chart -f secrets.yaml
 ```
+
+## HashiCorp Vault
+
+| Commande | Description |
+|----------|-------------|
+| `vault version` | Version de Vault |
+| `vault status` | Statut du serveur (sealed/unsealed) |
+| `vault login` | Se connecter (token prompt) |
+| `vault login -method=ldap username=user` | Login via LDAP |
+| `vault login -method=oidc` | Login via OIDC/SSO |
+| `vault token lookup` | Infos sur le token courant |
+| `vault token renew` | Renouveler le token courant |
+
+### Secrets KV (Key-Value)
+
+| Commande | Description |
+|----------|-------------|
+| `vault kv put secret/app/db password=abc123` | Écrire un secret (KV v2) |
+| `vault kv get secret/app/db` | Lire un secret |
+| `vault kv get -field=password secret/app/db` | Lire un champ spécifique |
+| `vault kv get -format=json secret/app/db` | Lire en JSON |
+| `vault kv list secret/app` | Lister les secrets d'un chemin |
+| `vault kv delete secret/app/db` | Supprimer un secret |
+| `vault kv undelete -versions=1 secret/app/db` | Restaurer une version supprimée |
+| `vault kv metadata get secret/app/db` | Métadonnées (versions, dates) |
+| `vault kv rollback -version=2 secret/app/db` | Rollback à une version |
+
+### Secrets engines
+
+| Commande | Description |
+|----------|-------------|
+| `vault secrets list` | Lister les engines activés |
+| `vault secrets enable -path=myapp kv-v2` | Activer un engine KV v2 |
+| `vault secrets enable aws` | Activer l'engine AWS |
+| `vault secrets enable database` | Activer l'engine database |
+| `vault secrets disable myapp/` | Désactiver un engine |
+
+### Policies
+
+| Commande | Description |
+|----------|-------------|
+| `vault policy list` | Lister les policies |
+| `vault policy read nom` | Lire une policy |
+| `vault policy write nom policy.hcl` | Créer/mettre à jour une policy |
+| `vault policy delete nom` | Supprimer une policy |
+
+### Auth methods
+
+| Commande | Description |
+|----------|-------------|
+| `vault auth list` | Lister les méthodes d'auth |
+| `vault auth enable approle` | Activer AppRole |
+| `vault auth enable kubernetes` | Activer l'auth Kubernetes |
+| `vault auth enable ldap` | Activer l'auth LDAP |
+| `vault auth disable ldap/` | Désactiver une méthode |
+
+### Credentials dynamiques
+
+```bash
+# AWS - générer des credentials temporaires
+vault read aws/creds/mon-role
+
+# Database - générer un user/password temporaire
+vault read database/creds/mon-role
+
+# PKI - générer un certificat TLS
+vault write pki/issue/mon-role common_name=app.example.com
+```
+
+### Opérations serveur
+
+| Commande | Description |
+|----------|-------------|
+| `vault operator init` | Initialiser Vault (génère les clés unseal) |
+| `vault operator unseal` | Unsealer (à répéter avec chaque clé) |
+| `vault operator seal` | Sealer Vault (urgence) |
+| `vault operator raft list-peers` | Lister les nœuds du cluster (Raft) |
+| `vault lease revoke -prefix aws/creds/` | Révoquer tous les leases d'un chemin |
+| `vault audit enable file file_path=/var/log/vault.log` | Activer l'audit log |
+
+### Variables d'environnement
+
+```bash
+export VAULT_ADDR="https://vault.example.com:8200"
+export VAULT_TOKEN="hvs.xxxxxxxxxxxxx"
+export VAULT_NAMESPACE="admin"           # Enterprise
+export VAULT_SKIP_VERIFY=true            # Dev uniquement
+```
