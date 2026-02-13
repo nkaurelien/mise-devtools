@@ -13,37 +13,42 @@ cd mise-devtools
 mise trust
 ```
 
-## Git aliases
+## Usage
 
 ### Via mise tasks
 
 ```bash
-mise run gst          # git status
-mise run gcmm -- "msg" # git commit -m "msg"
-mise run gco -- main   # git checkout main
-```
-
-List all available tasks:
-
-```bash
-mise tasks
+mise tasks                    # List all available tasks
+mise run gst                  # git status
+mise run gcmm -- "msg"        # git commit -m "msg"
+mise run sd-status -- nginx   # systemctl status nginx
+mise run install -- curl      # apt-get install curl
 ```
 
 ### Via shell aliases
 
-Source the aliases directly in your shell:
+Source all aliases at once:
 
 ```bash
-source shell/git_aliases.sh
+source shell/source_all.sh
 ```
 
-Or add to your `.bashrc` / `.zshrc`:
+Or source individually:
 
 ```bash
-source /path/to/mise-devtools/shell/git_aliases.sh
+source shell/git_aliases.sh    # Git shortcuts only
+source shell/linux_aliases.sh  # Linux/system shortcuts only
+```
+
+Add to your `.bashrc` / `.zshrc` for permanent use:
+
+```bash
+source /path/to/mise-devtools/shell/source_all.sh
 ```
 
 ## Aliases reference
+
+### Git
 
 | Alias | Command |
 |-------|---------|
@@ -65,8 +70,70 @@ source /path/to/mise-devtools/shell/git_aliases.sh
 | `gpf` | `git fetch` |
 | `grh` | `git reset --hard HEAD` |
 | `grv` | `git revert` |
+| `gd` | `git diff` |
+| `glog` | `git log --oneline --decorate --graph` |
+| `gclean` | `git clean -fd` |
+| `gundo` | `git reset HEAD~1 --mixed` |
+| `gignore` | `git update-index --assume-unchanged` |
+| `gunignore` | `git update-index --no-assume-unchanged` |
+
+### Navigation
+
+| Alias | Command |
+|-------|---------|
+| `..` | `cd ..` |
+| `...` | `cd ../../` |
+| `....` | `cd ../../../` |
+| `c` | `clear` |
+| `d` | `cd ~/Documents` |
+| `dl` | `cd ~/Downloads` |
+| `dt` | `cd ~/Desktop` |
+| `t` | `cd /tmp` |
+
+### Files & directories
+
+| Alias | Command |
+|-------|---------|
+| `ll` | `ls -lah` |
+| `la` | `ls -A` |
+| `le` | `ls -CF` |
+| `md` | `mkdir -p` |
+| `rd` | `rmdir` |
+| `cpr` | `cp -r` |
+
+### Systemd
+
+| Alias | Command |
+|-------|---------|
+| `sd-start` | `sudo systemctl start` |
+| `sd-stop` | `sudo systemctl stop` |
+| `sd-restart` | `sudo systemctl restart` |
+| `sd-enable` | `sudo systemctl enable` |
+| `sd-disable` | `sudo systemctl disable` |
+| `sd-status` | `sudo systemctl status` |
+
+### Network & system
+
+| Alias | Command |
+|-------|---------|
+| `ping` | `ping -c 5` |
+| `ports` | `netstat -tulanp` |
+| `psg` | `ps aux \| grep` |
+| `disk-usage` | `df -h` |
+| `disk-tree` | `du -sh *` |
+| `swap_usage` | `free -m` |
+
+### Package management (Debian/Ubuntu)
+
+| Alias | Command |
+|-------|---------|
+| `update` | `sudo apt-get update` |
+| `upgrade` | `sudo apt-get update && upgrade` |
+| `install` | `sudo apt-get install` |
+| `remove` | `sudo apt-get remove` |
 
 ## Sources
 
-- [GitHub Gist](https://gist.github.com/nkaurelien/1a72e8fe752cb39574aa73e7cee7a80a)
-- [GitLab Snippet](https://gitlab.com/-/snippets/3762573)
+- [GitHub Gist - git_aliases](https://gist.github.com/nkaurelien/1a72e8fe752cb39574aa73e7cee7a80a)
+- [GitLab Snippet - git_aliases](https://gitlab.com/-/snippets/3762573)
+- [GitLab Snippet - linux_aliases](https://gitlab.com/-/snippets/3762574)

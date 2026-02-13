@@ -1,22 +1,9 @@
-[alias.git]
-gi = "git init"
-gc = "git clone"
-gst = "git status"
-ga = "git add"
-gcm = "git commit"
-gcmm = "git commit -m"
-gl = "git log"
-gb = "git branch"
-gco = "git checkout"
-gm = "git merge"
-gbd = "git branch -D"
-gr = "git remote"
-gra = "git remote add"
-gp = "git push"
-gpl = "git pull"
-gpf = "git fetch"
-grh = "git reset --hard HEAD"
-grv = "git revert"
+# mise-devtools configuration
+# https://mise.jdx.dev/
+
+# =============================================================================
+# Git tasks
+# =============================================================================
 
 [tasks.gi]
 description = "git init"
@@ -89,3 +76,99 @@ run = "git reset --hard HEAD"
 [tasks.grv]
 description = "git revert"
 run = "git revert {{arg(name='commit')}}"
+
+[tasks.gd]
+description = "git diff"
+run = "git diff"
+
+[tasks.glog]
+description = "git log --oneline --decorate --graph"
+run = "git log --oneline --decorate --graph"
+
+[tasks.gclean]
+description = "git clean -fd"
+run = "git clean -fd"
+
+[tasks.gundo]
+description = "Undo last commit (keep changes)"
+run = "git reset HEAD~1 --mixed"
+
+# =============================================================================
+# System / Linux tasks
+# =============================================================================
+
+[tasks.ll]
+description = "ls -lah"
+run = "ls -lah"
+
+[tasks.la]
+description = "ls -A"
+run = "ls -A"
+
+[tasks.disk-usage]
+description = "Show disk usage (df -h)"
+run = "df -h"
+
+[tasks.disk-tree]
+description = "Show disk usage tree (du -sh *)"
+run = "du -sh *"
+
+[tasks.swap-usage]
+description = "Show swap usage (free -m)"
+run = "free -m"
+
+[tasks.ports]
+description = "Show open ports"
+run = "netstat -tulanp"
+
+[tasks.psg]
+description = "Search processes"
+run = "ps aux | grep {{arg(name='pattern')}}"
+
+# =============================================================================
+# Systemd tasks
+# =============================================================================
+
+[tasks.sd-start]
+description = "systemctl start"
+run = "sudo systemctl start {{arg(name='service')}}"
+
+[tasks.sd-stop]
+description = "systemctl stop"
+run = "sudo systemctl stop {{arg(name='service')}}"
+
+[tasks.sd-restart]
+description = "systemctl restart"
+run = "sudo systemctl restart {{arg(name='service')}}"
+
+[tasks.sd-status]
+description = "systemctl status"
+run = "sudo systemctl status {{arg(name='service')}}"
+
+[tasks.sd-enable]
+description = "systemctl enable"
+run = "sudo systemctl enable {{arg(name='service')}}"
+
+[tasks.sd-disable]
+description = "systemctl disable"
+run = "sudo systemctl disable {{arg(name='service')}}"
+
+# =============================================================================
+# Package management tasks (Debian/Ubuntu)
+# =============================================================================
+
+[tasks.update]
+description = "apt-get update"
+run = "sudo apt-get update"
+
+[tasks.upgrade]
+description = "apt-get update && upgrade"
+run = "sudo apt-get update && sudo apt-get upgrade"
+
+[tasks.install]
+description = "apt-get install"
+run = "sudo apt-get install {{arg(name='package')}}"
+
+[tasks.remove]
+description = "apt-get remove"
+run = "sudo apt-get remove {{arg(name='package')}}"

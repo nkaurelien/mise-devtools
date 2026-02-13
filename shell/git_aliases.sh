@@ -3,6 +3,7 @@
 # Git aliases - source this file to enable shortcuts
 # Usage: source git_aliases.sh
 
+# Basic operations
 alias gi='git init'
 alias gc='git clone'
 alias gst='git status'
@@ -21,3 +22,20 @@ alias gpl='git pull'
 alias gpf='git fetch'
 alias grh='git reset --hard HEAD'
 alias grv='git revert'
+alias gd='git diff'
+
+# Visualization
+alias gk='gitk --all &'
+alias gx='gitx --all'
+alias glog='git log --oneline --decorate --graph'
+
+# Advanced
+alias gignore='git update-index --assume-unchanged'
+alias gunignore='git update-index --no-assume-unchanged'
+alias gclean='git clean -fd'
+alias gundo='git reset HEAD~1 --mixed'
+
+# Swap files
+alias git-swap-files='git ls-files -o'
+alias git-clean-swap-files='git clean -xfd'
+alias git-rm-swap-file='git rm --cached'
