@@ -13,6 +13,15 @@ cd mise-devtools
 mise trust
 ```
 
+## Docker
+
+Build and run with all aliases pre-loaded:
+
+```bash
+docker build -t mise-devtools .
+docker run -it --rm mise-devtools
+```
+
 ## Usage
 
 ### Via mise tasks
