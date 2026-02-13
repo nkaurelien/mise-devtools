@@ -2,10 +2,48 @@
 
 Dev environment setup powered by [mise-en-place](https://mise.jdx.dev/).
 
+## Install mise
+
+> Full documentation: [mise.jdx.dev/installing-mise](https://mise.jdx.dev/installing-mise.html)
+
+```bash
+# curl (recommended)
+curl https://mise.run | sh
+
+# Homebrew (macOS/Linux)
+brew install mise
+
+# APT (Ubuntu/Debian)
+sudo add-apt-repository -y ppa:jdxcode/mise
+sudo apt update -y && sudo apt install -y mise
+
+# DNF (Fedora/RHEL)
+dnf copr enable jdxcode/mise && dnf install mise
+
+# Pacman (Arch)
+sudo pacman -S mise
+
+# APK (Alpine)
+apk add mise
+
+# Cargo
+cargo install mise
+
+# NPM
+npm install -g @jdxcode/mise
+```
+
+Activate mise in your shell (`~/.bashrc` or `~/.zshrc`):
+
+```bash
+eval "$(mise activate bash)"   # bash
+eval "$(mise activate zsh)"    # zsh
+mise activate fish | source    # fish
+```
+
 ## Setup
 
-1. [Install mise](https://mise.jdx.dev/getting-started.html)
-2. Clone this repo and activate:
+Clone this repo and activate:
 
 ```bash
 git clone https://github.com/nkaurelien/mise-devtools.git
