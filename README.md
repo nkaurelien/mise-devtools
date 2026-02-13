@@ -225,8 +225,3 @@ source /path/to/mise-devtools/shell/source_all.sh
 | `df` | `df -h` |
 | `du` | `du -sh` |
 
-## Sources
-
-- [GitHub Gist - git_aliases](https://gist.github.com/nkaurelien/1a72e8fe752cb39574aa73e7cee7a80a)
-- [GitLab Snippet - git_aliases](https://gitlab.com/-/snippets/3762573)
-- [GitLab Snippet - linux_aliases](https://gitlab.com/-/snippets/3762574)
