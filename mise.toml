@@ -1,0 +1,91 @@
+[alias.git]
+gi = "git init"
+gc = "git clone"
+gst = "git status"
+ga = "git add"
+gcm = "git commit"
+gcmm = "git commit -m"
+gl = "git log"
+gb = "git branch"
+gco = "git checkout"
+gm = "git merge"
+gbd = "git branch -D"
+gr = "git remote"
+gra = "git remote add"
+gp = "git push"
+gpl = "git pull"
+gpf = "git fetch"
+grh = "git reset --hard HEAD"
+grv = "git revert"
+
+[tasks.gi]
+description = "git init"
+run = "git init"
+
+[tasks.gc]
+description = "git clone"
+run = "git clone {{arg(name='repo')}}"
+
+[tasks.gst]
+description = "git status"
+run = "git status"
+
+[tasks.ga]
+description = "git add"
+run = "git add {{arg(name='files', default='.')}}"
+
+[tasks.gcm]
+description = "git commit"
+run = "git commit"
+
+[tasks.gcmm]
+description = "git commit -m"
+run = "git commit -m '{{arg(name=\"message\")}}'"
+
+[tasks.gl]
+description = "git log"
+run = "git log"
+
+[tasks.gb]
+description = "git branch"
+run = "git branch"
+
+[tasks.gco]
+description = "git checkout"
+run = "git checkout {{arg(name='branch')}}"
+
+[tasks.gm]
+description = "git merge"
+run = "git merge {{arg(name='branch')}}"
+
+[tasks.gbd]
+description = "git branch -D"
+run = "git branch -D {{arg(name='branch')}}"
+
+[tasks.gr]
+description = "git remote"
+run = "git remote"
+
+[tasks.gra]
+description = "git remote add"
+run = "git remote add {{arg(name='name')}} {{arg(name='url')}}"
+
+[tasks.gp]
+description = "git push"
+run = "git push"
+
+[tasks.gpl]
+description = "git pull"
+run = "git pull"
+
+[tasks.gpf]
+description = "git fetch"
+run = "git fetch"
+
+[tasks.grh]
+description = "git reset --hard HEAD"
+run = "git reset --hard HEAD"
+
+[tasks.grv]
+description = "git revert"
+run = "git revert {{arg(name='commit')}}"
