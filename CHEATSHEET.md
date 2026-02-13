@@ -616,3 +616,170 @@ cat urls.txt | xargs -P 4 -I {} curl -s {}
 # Passer chaque ligne comme argument
 cat hosts.txt | xargs -I {} ssh {} "uptime"
 ```
+
+## Git avancé
+
+### Stash (mise de côté temporaire)
+
+| Commande | Description |
+|----------|-------------|
+| `git stash` | Mettre de côté les modifications en cours |
+| `git stash -m "message"` | Stash avec un message descriptif |
+| `git stash -u` | Stash incluant les fichiers non suivis |
+| `git stash list` | Lister tous les stashs |
+| `git stash show -p` | Voir le contenu du dernier stash |
+| `git stash pop` | Restaurer le dernier stash et le supprimer |
+| `git stash apply` | Restaurer le dernier stash sans le supprimer |
+| `git stash apply stash@{2}` | Restaurer un stash spécifique |
+| `git stash drop stash@{0}` | Supprimer un stash |
+| `git stash clear` | Supprimer tous les stashs |
+| `git stash branch ma-branche` | Créer une branche depuis un stash |
+
+### Rebase
+
+| Commande | Description |
+|----------|-------------|
+| `git rebase main` | Rebaser la branche courante sur main |
+| `git rebase -i HEAD~5` | Rebase interactif des 5 derniers commits |
+| `git rebase -i --root` | Rebase interactif depuis le tout premier commit |
+| `git rebase --onto main A B` | Rebaser B sur main en ignorant les commits avant A |
+| `git rebase --continue` | Continuer après résolution d'un conflit |
+| `git rebase --abort` | Annuler le rebase en cours |
+| `git rebase --skip` | Ignorer le commit en conflit |
+
+### Rebase interactif - actions
+
+```
+pick   = garder le commit tel quel
+reword = garder le commit, modifier le message
+edit   = pause pour modifier le commit
+squash = fusionner avec le commit précédent (garde les messages)
+fixup  = fusionner avec le commit précédent (jette le message)
+drop   = supprimer le commit
+```
+
+### Cherry-pick
+
+| Commande | Description |
+|----------|-------------|
+| `git cherry-pick abc123` | Appliquer un commit spécifique sur la branche courante |
+| `git cherry-pick abc123..def456` | Appliquer une série de commits |
+| `git cherry-pick -n abc123` | Appliquer sans commit (staging only) |
+| `git cherry-pick --continue` | Continuer après résolution de conflit |
+| `git cherry-pick --abort` | Annuler le cherry-pick |
+
+### Reset & restore
+
+| Commande | Description |
+|----------|-------------|
+| `git reset HEAD~1` | Annuler le dernier commit (garde les modifs en working) |
+| `git reset --soft HEAD~1` | Annuler le dernier commit (garde les modifs en staging) |
+| `git reset --hard HEAD~1` | Annuler le dernier commit (supprime les modifs) |
+| `git reset HEAD fichier` | Désindexer un fichier (unstage) |
+| `git restore fichier` | Annuler les modifs d'un fichier (working tree) |
+| `git restore --staged fichier` | Désindexer un fichier |
+| `git restore --source=HEAD~3 fichier` | Restaurer un fichier depuis un ancien commit |
+
+### Reflog (historique de HEAD)
+
+| Commande | Description |
+|----------|-------------|
+| `git reflog` | Historique de tous les mouvements de HEAD |
+| `git reflog show ma-branche` | Historique d'une branche |
+| `git reset --hard HEAD@{5}` | Revenir à un état précédent via reflog |
+| `git checkout HEAD@{3} -- fichier` | Récupérer un fichier depuis le reflog |
+
+### Bisect (trouver un commit qui a introduit un bug)
+
+```bash
+git bisect start
+git bisect bad                  # Le commit courant a le bug
+git bisect good abc123          # Ce commit n'avait pas le bug
+# Git checkout un commit entre les deux, tester puis :
+git bisect good                 # Pas de bug ici
+git bisect bad                  # Bug présent ici
+# Répéter jusqu'à trouver le commit fautif
+git bisect reset                # Terminer la session
+
+# Automatiser avec un script de test
+git bisect run ./test.sh
+```
+
+### Log avancé
+
+| Commande | Description |
+|----------|-------------|
+| `git log --oneline --graph --all` | Graphe de toutes les branches |
+| `git log --oneline -20` | 20 derniers commits en une ligne |
+| `git log --author="nom"` | Commits d'un auteur |
+| `git log --since="2 weeks ago"` | Commits des 2 dernières semaines |
+| `git log --grep="fix"` | Commits contenant "fix" dans le message |
+| `git log -S "fonction"` | Commits qui ajoutent/suppriment "fonction" (pickaxe) |
+| `git log -p fichier` | Historique d'un fichier avec les diffs |
+| `git log --stat` | Résumé des fichiers modifiés par commit |
+| `git shortlog -sn` | Classement des contributeurs par nombre de commits |
+| `git log --format="%h %an %s" --since="1 month"` | Format personnalisé |
+
+### Diff avancé
+
+| Commande | Description |
+|----------|-------------|
+| `git diff --staged` | Diff des fichiers en staging |
+| `git diff branch1..branch2` | Diff entre deux branches |
+| `git diff HEAD~3..HEAD` | Diff des 3 derniers commits |
+| `git diff --name-only` | Lister uniquement les fichiers modifiés |
+| `git diff --stat` | Résumé des changements |
+| `git diff --word-diff` | Diff mot par mot (au lieu de ligne par ligne) |
+
+### Blame & debug
+
+| Commande | Description |
+|----------|-------------|
+| `git blame fichier` | Qui a modifié chaque ligne |
+| `git blame -L 10,20 fichier` | Blame des lignes 10 à 20 |
+| `git blame -w fichier` | Ignorer les changements de whitespace |
+| `git show abc123` | Détails d'un commit (diff inclus) |
+| `git show abc123:fichier` | Contenu d'un fichier à un commit donné |
+
+### Tags
+
+| Commande | Description |
+|----------|-------------|
+| `git tag` | Lister les tags |
+| `git tag v1.0.0` | Créer un tag léger |
+| `git tag -a v1.0.0 -m "Release 1.0"` | Créer un tag annoté |
+| `git tag -a v1.0.0 abc123` | Taguer un ancien commit |
+| `git push origin v1.0.0` | Pousser un tag |
+| `git push origin --tags` | Pousser tous les tags |
+| `git tag -d v1.0.0` | Supprimer un tag local |
+| `git push origin :refs/tags/v1.0.0` | Supprimer un tag distant |
+
+### Worktree (plusieurs working trees)
+
+| Commande | Description |
+|----------|-------------|
+| `git worktree add ../hotfix hotfix-branch` | Créer un worktree pour une branche |
+| `git worktree add ../temp -b nouvelle-branche` | Créer un worktree + nouvelle branche |
+| `git worktree list` | Lister les worktrees |
+| `git worktree remove ../hotfix` | Supprimer un worktree |
+
+### Submodules
+
+| Commande | Description |
+|----------|-------------|
+| `git submodule add url chemin` | Ajouter un submodule |
+| `git submodule update --init --recursive` | Initialiser et mettre à jour les submodules |
+| `git submodule update --remote` | Mettre à jour au dernier commit distant |
+| `git submodule foreach git pull origin main` | Pull dans chaque submodule |
+| `git submodule deinit chemin` | Désactiver un submodule |
+
+### Nettoyage
+
+| Commande | Description |
+|----------|-------------|
+| `git clean -n` | Lister les fichiers non suivis qui seraient supprimés (dry run) |
+| `git clean -fd` | Supprimer les fichiers et dossiers non suivis |
+| `git clean -fX` | Supprimer uniquement les fichiers ignorés (.gitignore) |
+| `git gc` | Garbage collection (optimiser le repo) |
+| `git prune` | Supprimer les objets orphelins |
+| `git remote prune origin` | Supprimer les branches distantes supprimées |
