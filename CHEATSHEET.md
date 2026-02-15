@@ -159,6 +159,90 @@ Pense-bête des commandes Linux/macOS pratiques.
 | `docker compose pull` | Mettre à jour les images |
 | `docker compose restart` | Redémarrer les services |
 
+### Docker Compose avancé
+
+| Commande | Description |
+|----------|-------------|
+| `docker compose up -d --build` | Rebuild + démarrer |
+| `docker compose up -d --force-recreate` | Recréer les conteneurs même sans changement |
+| `docker compose up -d --scale web=3` | Lancer 3 instances du service web |
+| `docker compose down -v` | Arrêter et supprimer les volumes |
+| `docker compose down --rmi all` | Arrêter et supprimer les images |
+| `docker compose config` | Valider et afficher la config finale |
+| `docker compose config --services` | Lister les noms de services |
+| `docker compose logs -f --tail=100 service` | 100 dernières lignes d'un service |
+| `docker compose top` | Processus dans chaque conteneur |
+| `docker compose cp service:/path ./local` | Copier un fichier depuis un service |
+| `docker compose run --rm service cmd` | Exécuter une commande ponctuelle |
+| `docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d` | Merge de fichiers compose |
+| `docker compose --profile debug up -d` | Démarrer avec un profil |
+| `docker compose --env-file .env.prod up -d` | Utiliser un fichier d'env spécifique |
+| `docker compose watch` | Hot reload (développement) |
+
+### Docker Swarm
+
+| Commande | Description |
+|----------|-------------|
+| `docker swarm init` | Initialiser un swarm (nœud manager) |
+| `docker swarm init --advertise-addr IP` | Init avec une IP spécifique |
+| `docker swarm join --token TOKEN IP:2377` | Rejoindre un swarm (worker) |
+| `docker swarm join-token worker` | Afficher le token pour les workers |
+| `docker swarm join-token manager` | Afficher le token pour les managers |
+| `docker swarm leave` | Quitter le swarm |
+| `docker swarm leave --force` | Quitter le swarm (manager) |
+
+### Swarm - Services
+
+| Commande | Description |
+|----------|-------------|
+| `docker service create --name web -p 80:80 nginx` | Créer un service |
+| `docker service ls` | Lister les services |
+| `docker service ps web` | Tâches (conteneurs) d'un service |
+| `docker service logs -f web` | Logs d'un service |
+| `docker service inspect web` | Détails d'un service |
+| `docker service scale web=5` | Scaler un service |
+| `docker service update --image nginx:latest web` | Mettre à jour l'image |
+| `docker service update --replicas 3 web` | Changer le nombre de replicas |
+| `docker service update --env-add KEY=val web` | Ajouter une variable d'env |
+| `docker service update --limit-cpu 0.5 web` | Limiter le CPU |
+| `docker service update --limit-memory 512m web` | Limiter la mémoire |
+| `docker service rollback web` | Rollback du service |
+| `docker service rm web` | Supprimer un service |
+
+### Swarm - Nœuds & réseau
+
+| Commande | Description |
+|----------|-------------|
+| `docker node ls` | Lister les nœuds du swarm |
+| `docker node inspect nom` | Détails d'un nœud |
+| `docker node promote nom` | Promouvoir un worker en manager |
+| `docker node demote nom` | Rétrograder un manager en worker |
+| `docker node update --availability drain nom` | Drainer un nœud (maintenance) |
+| `docker node update --availability active nom` | Remettre un nœud actif |
+| `docker network create -d overlay mon-reseau` | Créer un réseau overlay |
+
+### Swarm - Stack (déploiement compose)
+
+| Commande | Description |
+|----------|-------------|
+| `docker stack deploy -c docker-compose.yml app` | Déployer une stack |
+| `docker stack ls` | Lister les stacks |
+| `docker stack ps app` | Tâches d'une stack |
+| `docker stack services app` | Services d'une stack |
+| `docker stack rm app` | Supprimer une stack |
+
+### Swarm - Secrets & configs
+
+| Commande | Description |
+|----------|-------------|
+| `echo "mdp" \| docker secret create db_pass -` | Créer un secret |
+| `docker secret ls` | Lister les secrets |
+| `docker secret inspect db_pass` | Détails d'un secret (pas la valeur) |
+| `docker secret rm db_pass` | Supprimer un secret |
+| `docker config create nginx.conf ./nginx.conf` | Créer une config |
+| `docker config ls` | Lister les configs |
+| `docker service update --secret-add db_pass web` | Attacher un secret à un service |
+
 ## Terraform
 
 | Commande | Description |
